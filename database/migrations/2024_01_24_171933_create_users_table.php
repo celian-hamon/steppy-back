@@ -25,8 +25,11 @@ class CreateUsersTable extends Migration
             $table->foreign('jobId')->references('id')->on('jobs');
             $table->boolean('shareData');
             $table->string('code');
+            $table->timestamp('last_login')->nullable();
             $table->boolean('isAdmin');
             $table->string('password')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
