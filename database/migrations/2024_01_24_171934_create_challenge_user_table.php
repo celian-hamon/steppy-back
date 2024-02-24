@@ -18,7 +18,7 @@ class CreateChallengeUserTable extends Migration
         Schema::create('challenge_user', function (Blueprint $table) {
             $table->bigInteger('challengeId');
             $table->foreign('challengeId')->references('id')->on('challenges');
-            $table->uuid('userId');
+            $table->bigInteger('userId');
             $table->foreign('userId')->references('id')->on('users');
         });
 
