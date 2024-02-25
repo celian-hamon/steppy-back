@@ -7,16 +7,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Badge
- * 
+ *
  * @property int $id
  * @property string $image
  * @property string $name
  * @property string $description
- * 
+ *
  * @property Collection|Avatar[] $avatars
  * @property Collection|Challenge[] $challenges
  * @property Collection|User[] $users
@@ -25,7 +26,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Badge extends Model
 {
-	protected $table = 'badges';
+    use HasFactory;
+
+    protected $table = 'badges';
 	public $timestamps = false;
 
 	protected $fillable = [

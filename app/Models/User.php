@@ -16,7 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 /**
  * Class User
- * 
+ *
 //  * @property uuid $id
  * @property int $avatarId
  * @property int $age
@@ -30,7 +30,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * 
+ *
  * @property Avatar $avatar
  * @property Job $job
  * @property Collection|Challenge[] $challenges

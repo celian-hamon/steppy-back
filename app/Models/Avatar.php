@@ -7,16 +7,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Avatar
- * 
+ *
  * @property int $id
  * @property string $image
  * @property string $name
  * @property int $badgeId
- * 
+ *
  * @property Badge $badge
  * @property Collection|User[] $users
  *
@@ -24,7 +25,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Avatar extends Model
 {
-	protected $table = 'avatar';
+    use HasFactory;
+
+    protected $table = 'avatar';
 	public $timestamps = false;
 
 	protected $casts = [
