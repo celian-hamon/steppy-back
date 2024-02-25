@@ -16,6 +16,7 @@ class CreateHealthMessagesTable extends Migration
         Schema::create('health_messages', function (Blueprint $table) {
             $table->id();
             $table->string('message');
+            $table->timestamps();
         });
     }
 

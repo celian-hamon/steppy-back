@@ -20,6 +20,7 @@ class CreateDailyChallengeStepsTable extends Migration
             $table->bigInteger('stepCount');
             $table->timestamp('day');
             $table->bigInteger('challengeId');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

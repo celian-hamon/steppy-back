@@ -20,6 +20,7 @@ class CreateChallengeUserTable extends Migration
             $table->foreign('challengeId')->references('id')->on('challenges');
             $table->uuid('userId');
             $table->foreign('userId')->references('id')->on('users');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
