@@ -21,6 +21,7 @@ class CreateAvatarTable extends Migration
             $table->string('name');
             $table->bigInteger('badgeId');
             $table->foreign('badgeId')->references('id')->on('badges');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

@@ -20,6 +20,7 @@ class CreateUserBadgeTable extends Migration
             $table->foreign('userId')->references('id')->on('users');
             $table->bigInteger('badgeId');
             $table->foreign('badgeId')->references('id')->on('badges');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

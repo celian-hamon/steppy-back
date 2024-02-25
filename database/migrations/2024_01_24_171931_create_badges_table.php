@@ -20,6 +20,7 @@ class CreateBadgesTable extends Migration
             $table->string('image');
             $table->string('name');
             $table->string('description');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

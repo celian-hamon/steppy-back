@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Avatar;
+use App\Models\Job;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -11,8 +13,6 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
-    protected static ?string $password;
-
     /**
      * Define the model's default state.
      *
@@ -21,11 +21,16 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'id' => $this->faker->uuid(),
+            'avatarId' => Avatar::all()->random()->first()->id,
+            'age' => $this->faker->numberBetween(18, 60),
+            'sexe' => $this->faker->randomElement(['f', 'm']),
+            'jobId' => Job::all()->random()->first()->id,
+            'shareData' => $this->faker->boolean(),
+            'code' => $this->faker->uuid(),
+            'lastLogin' => $this->faker->dateTime(),
+            'isAdmin' => $this->faker->boolean(),
+            'password' => Hash::make('password'),
         ];
     }
 

@@ -21,6 +21,7 @@ class CreateDailyStepsTable extends Migration
             $table->timestamp('day');
             $table->bigInteger('userId');
             $table->foreign('userId')->references('id')->on('users');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

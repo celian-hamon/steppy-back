@@ -23,6 +23,7 @@ class CreateChallengesTable extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('description');
+            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();
