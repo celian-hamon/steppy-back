@@ -9,3 +9,5 @@ install:
 	docker exec -it steppy-back-laravel.test-1 php artisan migrate:fresh
 bash:
 	docker exec -it steppy-back-laravel.test-1 bash
+seed:
+	docker exec -it steppy-back-laravel.test-1 php artisan db:seed
