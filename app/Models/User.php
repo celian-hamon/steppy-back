@@ -1,46 +1,100 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * Class User
+ * 
+//  * @property uuid $id
+ * @property int $avatarId
+ * @property int $age
+ * @property string $sexe
+ * @property int $jobId
+ * @property bool $shareData
+ * @property string $code
+ * @property Carbon|null $last_login
+ * @property bool $isAdmin
+ * @property string|null $password
+ * @property string|null $remember_token
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * 
+ * @property Avatar $avatar
+ * @property Job $job
+ * @property Collection|Challenge[] $challenges
+ * @property Collection|Badge[] $badges
+ * @property Collection|DailyStep[] $daily_steps
+ *
+ * @package App\Models
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+	use HasApiTokens, HasFactory, Notifiable;
+	protected $table = 'users';
+	public $incrementing = true;
 
-    protected $table = "users";
+	protected $casts = [
+		'avatarId' => 'int',
+		'age' => 'int',
+		'jobId' => 'int',
+		'shareData' => 'bool',
+		'last_login' => 'datetime',
+		'isAdmin' => 'bool'
+	];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'age',
-        'sexe',
-        'shareData',
-    ];
+	protected $hidden = [
+		'password',
+		'remember_token'
+	];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+	protected $fillable = [
+		'id',
+		'avatarId',
+		'age',
+		'sexe',
+		'jobId',
+		'shareData',
+		'code',
+		'last_login',
+		'isAdmin',
+		'password',
+		'remember_token'
+	];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'password' => 'hashed',
-    ];
+	public function avatar()
+	{
+		return $this->belongsTo(Avatar::class, 'avatarId');
+	}
+
+	public function job()
+	{
+		return $this->belongsTo(Job::class, 'jobId');
+	}
+
+	public function challenges()
+	{
+		return $this->belongsToMany(Challenge::class, 'challenge_user', 'userId', 'challengeId');
+	}
+
+	public function badges()
+	{
+		return $this->belongsToMany(Badge::class, 'user_badge', 'userId', 'badgeId');
+	}
+
+	public function daily_steps()
+	{
+		return $this->hasMany(DailyStep::class, 'userId');
+	}
 }

@@ -6,37 +6,39 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class DailyStep
+ * Class ChallengeUser
  * 
- * @property int $id
- * @property int $stepCount
- * @property Carbon $day
+ * @property int $challengeId
  * @property uuid $userId
  * 
+ * @property Challenge $challenge
  * @property User $user
  *
  * @package App\Models
  */
-class DailyStep extends Model
+class ChallengeUser extends Model
 {
-	protected $table = 'daily_steps';
+	protected $table = 'challenge_user';
+	public $incrementing = false;
 	public $timestamps = false;
 
 	protected $casts = [
-		'stepCount' => 'int',
-		'day' => 'datetime',
+		'challengeId' => 'int',
 		'userId' => 'uuid'
 	];
 
 	protected $fillable = [
-		'stepCount',
-		'day',
+		'challengeId',
 		'userId'
 	];
+
+	public function challenge()
+	{
+		return $this->belongsTo(Challenge::class, 'challengeId');
+	}
 
 	public function user()
 	{
