@@ -19,11 +19,6 @@ class CreateUsersTable extends Migration
             $table->id()->autoIncrement()->unique();
             $table->bigInteger('avatarId');
             $table->foreign('avatarId')->references('id')->on('avatar');
-            $table->bigInteger('age');
-            $table->string('sexe');
-            $table->bigInteger('jobId');
-            $table->foreign('jobId')->references('id')->on('jobs');
-            $table->boolean('shareData');
             $table->string('code');
             $table->timestamp('lastLogin')->nullable();
             $table->boolean('isAdmin');

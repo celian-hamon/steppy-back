@@ -17,7 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * Class User
  *
-//  * @property uuid $id
+ * //  * @property uuid $id
  * @property int $avatarId
  * @property int $age
  * @property string $sexe
@@ -32,7 +32,6 @@ use Laravel\Sanctum\HasApiTokens;
  * @property Carbon|null $updated_at
  *
  * @property Avatar $avatar
- * @property Job $job
  * @property Collection|Challenge[] $challenges
  * @property Collection|Badge[] $badges
  * @property Collection|DailyStep[] $daily_steps
@@ -41,60 +40,54 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class User extends Authenticatable
 {
-	use HasApiTokens, HasFactory, Notifiable;
-	protected $table = 'users';
-	public $incrementing = true;
+    use HasApiTokens, HasFactory, Notifiable;
 
-	protected $casts = [
-		'avatarId' => 'int',
-		'age' => 'int',
-		'jobId' => 'int',
-		'shareData' => 'bool',
-		'last_login' => 'datetime',
-		'isAdmin' => 'bool'
-	];
+    protected $table = 'users';
+    public $incrementing = true;
 
-	protected $hidden = [
-		'password',
-		'remember_token'
-	];
+    protected $casts = [
+        'avatarId' => 'int',
+        'age' => 'int',
+        'shareData' => 'bool',
+        'last_login' => 'datetime',
+        'isAdmin' => 'bool'
+    ];
 
-	protected $fillable = [
-		'id',
-		'avatarId',
-		'age',
-		'sexe',
-		'jobId',
-		'shareData',
-		'code',
-		'last_login',
-		'isAdmin',
-		'password',
-		'remember_token'
-	];
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
 
-	public function avatar()
-	{
-		return $this->belongsTo(Avatar::class, 'avatarId');
-	}
+    protected $fillable = [
+        'id',
+        'avatarId',
+        'age',
+        'sexe',
+        'shareData',
+        'code',
+        'last_login',
+        'isAdmin',
+        'password',
+        'remember_token'
+    ];
 
-	public function job()
-	{
-		return $this->belongsTo(Job::class, 'jobId');
-	}
+    public function avatar()
+    {
+        return $this->belongsTo(Avatar::class, 'avatarId');
+    }
 
-	public function challenges()
-	{
-		return $this->belongsToMany(Challenge::class, 'challenge_user', 'userId', 'challengeId');
-	}
+    public function challenges()
+    {
+        return $this->belongsToMany(Challenge::class, 'challenge_user', 'userId', 'challengeId');
+    }
 
-	public function badges()
-	{
-		return $this->belongsToMany(Badge::class, 'user_badge', 'userId', 'badgeId');
-	}
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'user_badge', 'userId', 'badgeId');
+    }
 
-	public function daily_steps()
-	{
-		return $this->hasMany(DailyStep::class, 'userId');
-	}
+    public function daily_steps()
+    {
+        return $this->hasMany(DailyStep::class, 'userId');
+    }
 }

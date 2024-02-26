@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
         $challenge->password = 'password';
         $challenge->save();
 
-        Job::factory(10)->create();
         Badge::factory(5)->create();
         Avatar::factory(10)->create();
         User::factory(10)->create();
