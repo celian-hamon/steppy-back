@@ -13,16 +13,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class User
  *
- * //  * @property uuid $id
+ * @property Uuid $id
  * @property int $avatarId
- * @property int $age
- * @property string $sexe
  * @property int $jobId
- * @property bool $shareData
  * @property string $code
  * @property Carbon|null $last_login
  * @property bool $isAdmin
@@ -47,8 +45,6 @@ class User extends Authenticatable
 
     protected $casts = [
         'avatarId' => 'int',
-        'age' => 'int',
-        'shareData' => 'bool',
         'last_login' => 'datetime',
         'isAdmin' => 'bool'
     ];
@@ -61,9 +57,6 @@ class User extends Authenticatable
     protected $fillable = [
         'id',
         'avatarId',
-        'age',
-        'sexe',
-        'shareData',
         'code',
         'last_login',
         'isAdmin',

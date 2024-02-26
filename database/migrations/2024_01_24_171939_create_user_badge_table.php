@@ -16,7 +16,7 @@ class CreateUserBadgeTable extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('user_badge', function (Blueprint $table) {
-            $table->bigInteger('userId');
+            $table->uuid('userId');
             $table->foreign('userId')->references('id')->on('users');
             $table->bigInteger('badgeId');
             $table->foreign('badgeId')->references('id')->on('badges');

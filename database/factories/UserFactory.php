@@ -23,9 +23,6 @@ class UserFactory extends Factory
         return [
             'id' => $this->faker->uuid(),
             'avatarId' => Avatar::all()->random()->first()->id,
-            'age' => $this->faker->numberBetween(18, 60),
-            'sexe' => $this->faker->randomElement(['f', 'm']),
-            'shareData' => $this->faker->boolean(),
             'code' => $this->faker->uuid(),
             'lastLogin' => $this->faker->dateTime(),
             'isAdmin' => $this->faker->boolean(),

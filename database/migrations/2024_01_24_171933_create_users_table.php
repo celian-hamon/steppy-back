@@ -16,7 +16,7 @@ class CreateUsersTable extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('users', function (Blueprint $table) {
-            $table->id()->autoIncrement()->unique();
+            $table->uuid('id')->unique();
             $table->bigInteger('avatarId');
             $table->foreign('avatarId')->references('id')->on('avatar');
             $table->string('code');
