@@ -62,5 +62,12 @@ class AuthController extends Controller
         return $request->user();
     }
 
+    public function unauthorized()
+    {
+        return response()->json([
+            'message' => 'You need to be connected to access this ressource.'
+        ], 401);
+    }
+
 
 }

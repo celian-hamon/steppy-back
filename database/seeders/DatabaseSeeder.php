@@ -29,5 +29,11 @@ class DatabaseSeeder extends Seeder
         Badge::factory(5)->create();
         Avatar::factory(10)->create();
         User::factory(10)->create();
+
+        User::factory()->create([
+            'code' => '123456789',
+            'isAdmin' => true,
+            'password' => bcrypt('password')
+        ]);
     }
 }
