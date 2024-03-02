@@ -16,7 +16,7 @@ class CreateDailyChallengeStepsTable extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('daily_challenge_steps', function (Blueprint $table) {
-            $table->id()->foreign('Challenges.id');
+            $table->id();
             $table->bigInteger('stepCount');
             $table->timestamp('day');
             $table->bigInteger('challengeId');
