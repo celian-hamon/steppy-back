@@ -20,7 +20,7 @@ class CreateDailyChallengeStepsTable extends Migration
             $table->bigInteger('stepCount');
             $table->timestamp('day');
             $table->bigInteger('challengeId');
-            $table->foreign('challengeId')->reference('id')->on('challenges');
+            $table->foreign('challengeId')->references('id')->on('challenges');
             $table->timestamps();
         });
 
