@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Badge;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class BadgeController extends Controller
 {
@@ -27,7 +28,9 @@ class BadgeController extends Controller
             'description' => 'required|string',
         ]);
 
-        return Badge::create($request->all());
+        $badge = Badge::create($request->all());
+
+        return response()->json($badge, Response::HTTP_CREATED);
     }
 
     /**
@@ -35,7 +38,7 @@ class BadgeController extends Controller
      */
     public function show(Badge $badge)
     {
-        return $badge;
+        return response()->json($badge, Response::HTTP_OK);
     }
 
     /**
@@ -51,7 +54,7 @@ class BadgeController extends Controller
 
         $badge->update($request->all());
 
-        return $badge;
+        return response()->json($badge, Response::HTTP_OK);
     }
 
     /**
@@ -61,6 +64,6 @@ class BadgeController extends Controller
     {
         $badge->delete();
 
-        return response()->json(null, 204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
