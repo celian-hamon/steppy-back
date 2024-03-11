@@ -7,11 +7,12 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class DailyChallengeStep
- * 
+ *
  * @property int $id
  * @property int $stepCount
  * @property Carbon $day
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class DailyChallengeStep extends Model
 {
+    use HasFactory;
 	protected $table = 'daily_challenge_steps';
 	public $timestamps = false;
 
