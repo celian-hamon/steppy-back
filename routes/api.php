@@ -24,16 +24,30 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 
-// Route::resource('/badges', [BadgeController::class, 'index']);
+// Route::middleware(['auth:sanctum'])->group(function () {
+//     Route::resource('badges', BadgeController::class);
+// });
+
 Route::resource('badges', BadgeController::class);
 Route::resource('avatars', AvatarController::class);
 Route::resource('challenges', ChallengeController::class);
-
 Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
 Route::resource('daily-steps', DailyStepsController::class);
 Route::resource('health-messages', HealthMessagesController::class);
 Route::resource('users', UsersController::class);
+
+// Route::middleware(['auth:sanctum'])->group(function () {
+//     Route::resource('badges', BadgeController::class);
+//     Route::resource('avatars', AvatarController::class);
+//     Route::resource('challenges', ChallengeController::class);
+
+//     Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
+//     Route::resource('daily-steps', DailyStepsController::class);
+//     Route::resource('health-messages', HealthMessagesController::class);
+//     Route::resource('users', UsersController::class);
+// });
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
