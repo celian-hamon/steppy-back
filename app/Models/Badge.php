@@ -34,7 +34,9 @@ class Badge extends Model
 	protected $fillable = [
 		'image',
 		'name',
-		'description'
+		'description',
+		'isStreak',
+		'quantity'
 	];
 
 	public function avatars()
