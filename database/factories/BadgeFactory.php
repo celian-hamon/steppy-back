@@ -19,10 +19,13 @@ class BadgeFactory extends Factory
      */
     public function definition(): array
     {
+        $isStreak = $this->faker->boolean();
         return [
             'image' => "placeholder.png",
             'name' => $this->faker->name(),
-            'description' => $this->faker->sentence()
+            'description' => $this->faker->sentence(),
+            'isStreak' => $isStreak,
+            'quantity' => $isStreak ? $this->faker->numberBetween(1, 100) : $this->faker->numberBetween(1000, 30000),
         ];
     }
 }
