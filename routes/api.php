@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
 
     // DAILY STEPS
-    // Route::resource('daily-steps', DailyStepsController::class);
     route::get('daily-steps/user/all', [DailyStepsController::class, 'showAll']);
     route::get('daily-steps/user/last', [DailyStepsController::class, 'lastUserSteps']);
     route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showAtDate']);
