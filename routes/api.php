@@ -51,7 +51,12 @@ Route::resource('users', UsersController::class);
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+// Sanctum automatically redirects you to a 'login' route if you dont put 'Accept: application/json' in the header of the request
+// So to get a 401 response even if you forget the header i made this route whos only purpose is to return a 401 response
+Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
 // Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/me', [AuthController::class, 'me'])->setFallback(true);
 
 
