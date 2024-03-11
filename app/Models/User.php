@@ -41,7 +41,10 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
-    public $incrementing = true;
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 
     protected $casts = [
         'avatarId' => 'int',
