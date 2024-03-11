@@ -29,7 +29,7 @@ class Badge extends Model
     use HasFactory;
 
     protected $table = 'badges';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $fillable = [
 		'image',

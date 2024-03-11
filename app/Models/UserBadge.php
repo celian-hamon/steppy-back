@@ -24,7 +24,7 @@ class UserBadge extends Model
 {
 	protected $table = 'user_badge';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'userId' => 'bigint',

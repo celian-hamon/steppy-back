@@ -26,7 +26,7 @@ class UsersController extends Controller
             // Spécifiez les règles de validation pour les champs à ajouter ici
         ]);
 
-        // Créez un nouvel utilisateur avec les données de la requête
+        $request['password'] = bcrypt($request['password']);
         $user = User::create($request->all());
 
         // Retournez la réponse avec le statut HTTP 201 (Created) et les données de l'utilisateur créé

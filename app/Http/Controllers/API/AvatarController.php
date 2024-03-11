@@ -27,7 +27,6 @@ class AvatarController extends Controller
      */
     public function store(Request $request)
     {
-        var_dump("JE PASSE");
         $request->validate([
             'image' => 'required|string',
             'name' => 'required|string',

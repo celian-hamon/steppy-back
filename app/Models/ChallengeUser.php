@@ -23,7 +23,7 @@ class ChallengeUser extends Model
 {
 	protected $table = 'challenge_user';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'challengeId' => 'int',
