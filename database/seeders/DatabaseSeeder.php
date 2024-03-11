@@ -30,10 +30,22 @@ class DatabaseSeeder extends Seeder
         Avatar::factory(10)->create();
         User::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'code' => '123456789',
             'isAdmin' => true,
             'password' => bcrypt('password')
         ]);
+
+        // Create fake steps for past 10 days for all users including (and make them part of the challenge)
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->challenges()->attach($challenge->id);
+            for ($i = 0; $i < 10; $i++) {
+                $user->daily_steps()->create([
+                    'stepCount' => rand(1000, 10000),
+                    'day' => now()->subDays($i)
+                ]);
+            }
+        }
     }
 }
