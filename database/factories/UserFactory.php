@@ -23,7 +23,8 @@ class UserFactory extends Factory
         return [
             'id' => $this->faker->uuid(),
             'avatarId' => Avatar::all()->random()->first()->id,
-            'code' => $this->faker->uuid(),
+            // Random 9 digit number instead of an UUID, we're talking about public infrastructure here not a good infrastructure
+            'code' => $this->faker->randomNumber(9),
             'lastLogin' => $this->faker->dateTime(),
             'isAdmin' => $this->faker->boolean(),
             'password' => Hash::make('password'),
@@ -35,7 +36,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
         ]);
     }

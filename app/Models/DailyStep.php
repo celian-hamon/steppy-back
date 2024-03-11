@@ -8,6 +8,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class DailyStep
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property int $stepCount
  * @property Carbon $day
- * @property uuid $userId
+ * @property Uuid $userId
  * 
  * @property User $user
  *
@@ -29,7 +30,6 @@ class DailyStep extends Model
 	protected $casts = [
 		'stepCount' => 'int',
 		'day' => 'datetime',
-		'userId' => 'uuid'
 	];
 
 	protected $fillable = [
