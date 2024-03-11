@@ -36,11 +36,8 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
-        // assign user to challenge
-        $user->challenges()->attach($challenge->id);
-
-        // Create fake steps for past 10 days for all users (and make them part of the challenge)
-        $users = User::where('id', '!=', $user->id)->get();
+        // Create fake steps for past 10 days for all users including (and make them part of the challenge)
+        $users = User::all();
         foreach ($users as $user) {
             $user->challenges()->attach($challenge->id);
             for ($i = 0; $i < 10; $i++) {
