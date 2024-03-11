@@ -38,25 +38,15 @@ Route::resource('daily-steps', DailyStepsController::class);
 Route::resource('health-messages', HealthMessagesController::class);
 Route::resource('users', UsersController::class);
 
-// Route::middleware(['auth:sanctum'])->group(function () {
-//     Route::resource('badges', BadgeController::class);
-//     Route::resource('avatars', AvatarController::class);
-//     Route::resource('challenges', ChallengeController::class);
-
-//     Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
-//     Route::resource('daily-steps', DailyStepsController::class);
-//     Route::resource('health-messages', HealthMessagesController::class);
-//     Route::resource('users', UsersController::class);
-// });
-
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
 // Sanctum automatically redirects you to a 'login' route if you dont put 'Accept: application/json' in the header of the request
 // So to get a 401 response even if you forget the header i made this route whos only purpose is to return a 401 response
 Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
-// Route::get('/me', [AuthController::class, 'me'])->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->get('/me', [AuthController::class, 'me'])->setFallback(true);
+Route::middleware('auth:sanctum')->group(function () {
+    // stupid small testing route to return info about the user
+    Route::get('/me', [AuthController::class, 'me']);
 
-
+    Route::post('/import', [UsersController::class, 'import']);
+    Route::post('/export', [UsersController::class, 'export']);
+});

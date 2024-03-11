@@ -14,6 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Ramsey\Uuid\Uuid;
+use Illuminate\Support\Str;
 
 /**
  * Class User
@@ -66,6 +67,13 @@ class User extends Authenticatable
         'password',
         'remember_token'
     ];
+
+    public static function booted()
+    {
+        static::creating(function ($model) {
+            $model->id = Str::uuid();
+        });
+    }
 
     public function avatar()
     {
