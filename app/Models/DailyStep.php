@@ -25,7 +25,7 @@ use Ramsey\Uuid\Uuid;
 class DailyStep extends Model
 {
 	protected $table = 'daily_steps';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'stepCount' => 'int',

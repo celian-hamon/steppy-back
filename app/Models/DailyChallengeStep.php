@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
 class DailyChallengeStep extends Model
 {
 	protected $table = 'daily_challenge_steps';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'stepCount' => 'int',

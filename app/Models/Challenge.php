@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
 class Challenge extends Model
 {
 	protected $table = 'challenges';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'startAt' => 'datetime',
