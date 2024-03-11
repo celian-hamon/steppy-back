@@ -17,18 +17,12 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
 
-        // Why does the user have so many things in the migration even though i thought it was clear we're only getting code and password?
-        // Passing them as hardcoded default values for now cause i can't be bothered to change the migration for now
         $user = User::create([
             'id' => (string) Str::uuid(),
             'code' => $request->code,
             'password' => bcrypt($request->password),
             'isAdmin' => false,
             'avatarId' => 1,
-            'age' => 0,
-            'sexe' => 'N/A',
-            'jobId' => 0,
-            'shareData' => true,
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
