@@ -52,6 +52,14 @@ class UserController extends Controller
     public function import(Request $request)
     {
         $file = $request->file('csv');
+        // check if the file is a csv or if there is a file at all
+        if (!$file) {
+            return response()->json(['message' => 'No file uploaded']);
+        }
+        $fileType = $file->getClientMimeType();
+        if ($fileType !== 'text/csv') {
+            return response()->json(['message' => 'Invalid file type']);
+        }
         switch ($file->getClientOriginalExtension()) {
             case 'csv':
                 break;
