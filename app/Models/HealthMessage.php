@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 class HealthMessage extends Model
 {
 	protected $table = 'health_messages';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $fillable = [
 		'message'

@@ -24,7 +24,7 @@ class ChallengeBadge extends Model
 	protected $table = 'challenge_badge';
 	protected $primaryKey = 'challengeId';
 	public $incrementing = false;
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'challengeId' => 'int',

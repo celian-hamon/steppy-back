@@ -28,7 +28,7 @@ class Avatar extends Model
     use HasFactory;
 
     protected $table = 'avatar';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'badgeId' => 'int'

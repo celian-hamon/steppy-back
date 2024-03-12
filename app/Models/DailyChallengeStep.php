@@ -24,7 +24,7 @@ class DailyChallengeStep extends Model
 {
     use HasFactory;
 	protected $table = 'daily_challenge_steps';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'stepCount' => 'int',

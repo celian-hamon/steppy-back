@@ -32,6 +32,12 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
+        $user = User::factory()->create([
+            'code' => '987654321',
+            'isAdmin' => false,
+            'password' => bcrypt('password')
+        ]);
+
         // Create fake steps for past 10 days for all users including (and make them part of the challenge)
         $users = User::all();
         $challenge = Challenge::all()->random()->value('id');

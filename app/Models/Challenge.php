@@ -31,7 +31,7 @@ class Challenge extends Model
 {
     use HasFactory;
 	protected $table = 'challenges';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'startAt' => 'datetime',
