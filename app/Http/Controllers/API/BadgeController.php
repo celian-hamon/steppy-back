@@ -18,13 +18,13 @@ class BadgeController extends Controller
     }
 
     /**
-     * Store or update a badge.
+     * Create or update a badge.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int|null  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeOrUpdate(Request $request, $id = null)
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'image' => 'required|string',
