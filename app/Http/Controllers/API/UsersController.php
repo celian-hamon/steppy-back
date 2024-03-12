@@ -115,25 +115,13 @@ class UsersController extends Controller
         $startDate = (new \DateTime())->setTimestamp($request->startDate);
         $endDate = (new \DateTime())->setTimestamp($request->endDate);
 
-        // Format the dates to be used in the query
-        $formattedStartDate = $startDate->format('Y-m-d H:i:s');
-        $formattedEndDate = $endDate->format('Y-m-d H:i:s');
-
         // Get the users that have participated in the challenge
-        // $users = User::with([
-        //     'daily_steps' => function ($query) use ($challengeId, $formattedStartDate, $formattedEndDate) {
-        //         $query->join('challenge_user', 'challenge_user.userId', '=', 'daily_steps.userId')
-        //             ->where('challenge_user.challengeId', $challengeId)
-        //             ->whereBetween('daily_steps.day', [$formattedStartDate, $formattedEndDate]);
-        //     }
-        // ])->whereHas('challenges', function ($query) use ($challengeId) {
-        //     $query->where('challenge_user.challengeId', $challengeId);
-        // })->get();
         $users = User::with('daily_steps')
             ->whereHas('challenges', function ($query) use ($challengeId) {
                 $query->where('challenge_user.challengeId', $challengeId);
             })
             ->get();
+
         // Prepare the header with dynamic date columns
         $header = ['Code'];
         $period = new \DatePeriod(
@@ -167,21 +155,22 @@ class UsersController extends Controller
             $data[] = $userRow;
         }
 
-
         // Create the csv file
         $csvFileName = 'challenge_' . $challengeId . '_steps.csv';
+
+        // Generate the CSV file content
+        $csvContent = '';
+        foreach ($data as $row) {
+            $csvContent .= implode(',', $row) . "\n";
+        }
+
+        // Set the response headers
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $csvFileName . '"',
         ];
 
-        $handle = fopen('php://output', 'w');
-        foreach ($data as $row) {
-            fputcsv($handle, $row);
-        }
-        fclose($handle);
-
-        return Response::make('', 200, $headers);
+        // Return the CSV file as a response
+        return response($csvContent, 200, $headers);
     }
-
 }

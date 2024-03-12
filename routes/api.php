@@ -39,15 +39,17 @@ Route::middleware('auth:sanctum')->group(function () {
     route::get('daily-steps/user/last', [DailyStepsController::class, 'lastUserSteps']);
     route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showAtDate']);
     route::post('daily-steps', [DailyStepsController::class, 'storeOrUpdate']);
-    // Admin specific routes
-    route::get('daily-steps', [DailyStepsController::class, 'index']);
-    route::delete('daily-steps/{id}', [DailyStepsController::class, 'destroy']);
 
+    // Admin specific routes
+    Route::middleware('admin')->group(function () {
+        Route::get('daily-steps', [DailyStepsController::class, 'index']);
+        Route::delete('daily-steps/{id}', [DailyStepsController::class, 'destroy']);
+        Route::post('/import', [UsersController::class, 'import']);
+        Route::post('/export', [UsersController::class, 'export']);
+    });
 
     Route::apiResource('health-messages', HealthMessagesController::class);
     Route::apiResource('users', UsersController::class);
     
     Route::get('/me', [AuthController::class, 'me']);
-    Route::post('/import', [UsersController::class, 'import']);
-    Route::post('/export', [UsersController::class, 'export']);
 });
