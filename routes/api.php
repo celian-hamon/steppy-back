@@ -67,9 +67,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
     Route::delete('users/{userId}', [UsersController::class, 'destroy']);
 
+    Route::get('users/badges', [UsersController::class, 'showUserBadges']);
     Route::post('users/badges', [UsersController::class, 'addBadge']);
     Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
-    Route::get('users/badges', [UsersController::class, 'showUserBadges']);
 
     Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
     Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
