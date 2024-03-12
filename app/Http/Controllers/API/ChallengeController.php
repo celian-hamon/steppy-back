@@ -10,66 +10,71 @@ use Illuminate\Http\Response;
 class ChallengeController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieve all challenges.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|Challenge[]
      */
     public function index()
     {
-        return Challenge::all();
+        return Challenge::orderBy('endAt', 'desc')->get();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @param Request $request
+     * @param int|null $challengeId
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request, $challengeId = null)
     {
         $request->validate([
             'startAt' => 'required|date',
             'endAt' => 'required|date',
-            'allSteps' => 'required|integer',
-            'password' => 'required|string',
-            'name' => 'required|string',
-            'description' => 'required|string',
+            'name' => 'required',
+            'password' => 'required',
+            'description' => 'required',
         ]);
 
-        $challenge = Challenge::create($request->all());
+        $challenge = $challengeId ? Challenge::find($challengeId) : new Challenge;
 
-        return response()->json($challenge, Response::HTTP_CREATED);
+        if (!$challenge && $challengeId) {
+            return response()->json(['error' => 'Challenge not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $challenge->startAt = $request->input('startAt');
+        $challenge->endAt = $request->input('endAt');
+        $challenge->password = $request->input('password');
+        $challenge->name = $request->input('name');
+        $challenge->description = $request->input('description');
+
+        $challenge->save();
+
+        return response()->json(['message' => 'Challenge saved successfully', 'challenge' => $challenge], Response::HTTP_OK);
     }
 
     /**
-     * Display the specified resource.
+     * @param int $challengeId
+     * @return JsonResponse
      */
-    public function show(Challenge $challenge)
+    public function show($challengeId)
     {
+        $challenge = Challenge::find($challengeId);
+        if (!$challenge) {
+            return response()->json(['error' => 'Challenge not found'], Response::HTTP_NOT_FOUND);
+        }
         return response()->json($challenge, Response::HTTP_OK);
     }
 
     /**
-     * Update the specified resource in storage.
+     * @param int $challengeId
+     * @return JsonResponse
      */
-    public function update(Request $request, Challenge $challenge)
+    public function destroy($challengeId)
     {
-        $request->validate([
-            'startAt' => 'required|date',
-            'endAt' => 'required|date',
-            'allSteps' => 'required|integer',
-            'password' => 'required|string',
-            'name' => 'required|string',
-            'description' => 'required|string',
-        ]);
-
-        $challenge->update($request->all());
-
-        return response()->json($challenge, Response::HTTP_OK);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Challenge $challenge)
-    {
+        $challenge = Challenge::find($challengeId);
+        if (!$challenge) {
+            return response()->json(['error' => 'Challenge not found'], Response::HTTP_NOT_FOUND);
+        }
         $challenge->delete();
-
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

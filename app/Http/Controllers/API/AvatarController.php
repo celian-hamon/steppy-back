@@ -20,13 +20,13 @@ class AvatarController extends Controller
     }
 
     /**
-     * Store or update an avatar.
+     * Create or update an avatar.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int|null  $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeOrUpdate(Request $request, $id = null)
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'image' => 'required|string',

@@ -19,7 +19,7 @@ class CreateChallengesTable extends Migration
             $table->id();
             $table->timestamp('startAt');
             $table->timestamp('endAt');
-            $table->bigInteger('allSteps');
+            $table->bigInteger('allSteps')->default(0);
             $table->string('password');
             $table->string('name');
             $table->string('description');

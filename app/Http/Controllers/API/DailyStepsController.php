@@ -20,12 +20,12 @@ class DailyStepsController extends Controller
     }
 
     /**
-     * Store or update the daily steps for a user.
+     * Create or update the daily steps for a user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function storeOrUpdate(Request $request)
+    public function createOrUpdate(Request $request)
     {
         $request->validate([
             'stepCount' => 'required|integer',

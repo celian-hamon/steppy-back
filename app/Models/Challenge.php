@@ -44,7 +44,6 @@ class Challenge extends Model
 	protected $fillable = [
 		'startAt',
 		'endAt',
-		'allSteps',
 		'password',
 		'name',
 		'description'
