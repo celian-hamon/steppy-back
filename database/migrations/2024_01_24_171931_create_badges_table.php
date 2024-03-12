@@ -23,6 +23,7 @@ class CreateBadgesTable extends Migration
             // isStreak is a boolean that indicates if the badge need a streak to be unlock or a step amount
             $table->boolean('isStreak');
             $table->integer('quantity');
+            $table->boolean('isGlobal')->default(false);
             $table->timestamps();
         });
 

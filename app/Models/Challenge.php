@@ -8,11 +8,12 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Challenge
- * 
+ *
  * @property int $id
  * @property Carbon $startAt
  * @property Carbon $endAt
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $password
  * @property string $name
  * @property string $description
- * 
+ *
  * @property Collection|Badge[] $badges
  * @property Collection|User[] $users
  *
@@ -28,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Challenge extends Model
 {
+    use HasFactory;
 	protected $table = 'challenges';
 	public $timestamps = true;
 
@@ -58,4 +60,8 @@ class Challenge extends Model
 	{
 		return $this->belongsToMany(User::class, 'challenge_user', 'challengeId', 'userId');
 	}
+
+    public function dailySteps() {
+        return $this->hasMany(DailyStep::class, 'challenge_id', 'challengeId');
+    }
 }
