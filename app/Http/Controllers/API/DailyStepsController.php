@@ -19,7 +19,6 @@ class DailyStepsController extends Controller
         return DailyStep::all();
     }
 
-
     /**
      * Store or update the daily steps for a user.
      *
@@ -46,12 +45,31 @@ class DailyStepsController extends Controller
     }
 
     /**
+     * Display all daily steps for the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAllUserSteps(Request $request)
+    {
+        $dailySteps = DailyStep::where('userId', $request->user()->id)
+                               ->orderBy('day', 'desc')
+                               ->get();
+
+        if ($dailySteps->isEmpty()) {
+            return response()->json(['message' => 'No daily steps found for this user'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json($dailySteps, Response::HTTP_OK);
+    }
+
+    /**
      * Display the daily step count for a specific date.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function showAtDate(Request $request)
+    public function showUserStepsAtDate(Request $request)
     {
         $request->validate([
             'day' => 'required|date',
@@ -86,32 +104,6 @@ class DailyStepsController extends Controller
         } else {
             return response()->json(['message' => 'No daily steps found for this user'], Response::HTTP_NOT_FOUND);
         }
-    }
-
-    /**
-     * Update the daily step count for a specific date.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function updateAtDate(Request $request)
-    {
-        $request->validate([
-            'stepCount' => 'required|integer',
-            'day' => 'required|date',
-        ]);
-
-        $dailyStep = DailyStep::where('day', $request->day)
-            ->where('userId', $request->user()->id)
-            ->first();
-
-        if (!$dailyStep) {
-            return response()->json(['message' => 'DailyStep not found for this date'], Response::HTTP_NOT_FOUND);
-        }
-
-        $dailyStep->update($request->all());
-
-        return response()->json($dailyStep, Response::HTTP_OK);
     }
 
     /**

@@ -44,10 +44,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
 
     // DAILY STEPS
-    route::get('daily-steps/user/all', [DailyStepsController::class, 'showAll']);
-    route::get('daily-steps/user/last', [DailyStepsController::class, 'lastUserSteps']);
-    route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showAtDate']);
-    route::post('daily-steps', [DailyStepsController::class, 'storeOrUpdate']);
+    Route::post('daily-steps', [DailyStepsController::class, 'storeOrUpdate']);
+    Route::get('daily-steps/user/all', [DailyStepsController::class, 'showAllUserSteps']);
+    Route::get('daily-steps/user/last', [DailyStepsController::class, 'lastUserSteps']);
+    Route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showUserStepsAtDate']);
 
     // HEALTH MESSAGES
     Route::get('health-messages', [HealthMessagesController::class, 'index']);
