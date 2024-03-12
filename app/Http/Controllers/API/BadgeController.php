@@ -26,6 +26,8 @@ class BadgeController extends Controller
             'image' => 'required|string',
             'name' => 'required|string',
             'description' => 'required|string',
+            'isStreak' => 'required|boolean',
+            'quantity' => 'required|integer',
         ]);
 
         $badge = Badge::create($request->all());
@@ -50,6 +52,8 @@ class BadgeController extends Controller
             'image' => 'required|string',
             'name' => 'required|string',
             'description' => 'required|string',
+            'isStreak' => 'required|boolean',
+            'quantity' => 'required|integer',
         ]);
 
         $badge->update($request->all());

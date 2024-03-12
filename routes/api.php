@@ -28,11 +28,11 @@ Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    // stupid small testing route to return info about the user
-    Route::resource('badges', BadgeController::class); 
-    Route::resource('avatars', AvatarController::class);
-    Route::resource('challenges', ChallengeController::class);
-    Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
+    Route::apiResource('badges', BadgeController::class); 
+
+    Route::apiResource('avatars', AvatarController::class);
+    Route::apiResource('challenges', ChallengeController::class);
+    Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
 
     // DAILY STEPS
     route::get('daily-steps/user/all', [DailyStepsController::class, 'showAll']);
@@ -44,8 +44,8 @@ Route::middleware('auth:sanctum')->group(function () {
     route::delete('daily-steps/{id}', [DailyStepsController::class, 'destroy']);
 
 
-    Route::resource('health-messages', HealthMessagesController::class);
-    Route::resource('users', UsersController::class);
+    Route::apiResource('health-messages', HealthMessagesController::class);
+    Route::apiResource('users', UsersController::class);
     
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/import', [UsersController::class, 'import']);
