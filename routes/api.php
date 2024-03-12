@@ -28,10 +28,19 @@ Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+    // AUTH
+    Route::get('/me', [AuthController::class, 'me']);
+
+    // AVATARS
+    Route::apiResource('avatars', AvatarController::class);
+    
+    // BADGES
     Route::apiResource('badges', BadgeController::class); 
 
-    Route::apiResource('avatars', AvatarController::class);
+    // CHALLENGES
     Route::apiResource('challenges', ChallengeController::class);
+    
+    // DAILY CHALLENGE STEPS
     Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
 
     // DAILY STEPS
@@ -40,16 +49,24 @@ Route::middleware('auth:sanctum')->group(function () {
     route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showAtDate']);
     route::post('daily-steps', [DailyStepsController::class, 'storeOrUpdate']);
 
+    // HEALTH MESSAGES
+    Route::get('health-messages', [HealthMessagesController::class, 'index']);
+
+    // USERS
+    Route::apiResource('users', UsersController::class);
+
     // Admin specific routes
     Route::middleware('admin')->group(function () {
+        // DAILY STEPS
         Route::get('daily-steps', [DailyStepsController::class, 'index']);
         Route::delete('daily-steps/{id}', [DailyStepsController::class, 'destroy']);
+
+        // HEALTH MESSAGES
+        Route::post('health-messages/{id?}', [HealthMessagesController::class, 'createOrUpdate']);
+        Route::delete('health-messages/{id}', [HealthMessagesController::class, 'destroy']);
+
+        // USERS IMPORT/EXPORT
         Route::post('/import', [UsersController::class, 'import']);
         Route::post('/export', [UsersController::class, 'export']);
     });
-
-    Route::apiResource('health-messages', HealthMessagesController::class);
-    Route::apiResource('users', UsersController::class);
-    
-    Route::get('/me', [AuthController::class, 'me']);
 });

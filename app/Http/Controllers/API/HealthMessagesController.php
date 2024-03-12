@@ -10,7 +10,9 @@ use Illuminate\Http\Response;
 class HealthMessagesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieve all health messages.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|HealthMessage[]
      */
     public function index()
     {
@@ -18,48 +20,66 @@ class HealthMessagesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the specified health message.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function show($id)
+    {
+        $healthMessage = HealthMessage::find($id);
+
+        if ($healthMessage) {
+            return response()->json($healthMessage, Response::HTTP_OK);
+        } else {
+            return response()->json(['error' => 'HealthMessage not found'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Create or update a health message.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int|null  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'message' => 'required|string',
         ]);
 
-        $healthMessage = HealthMessage::create($request->all());
-
-        return response()->json($healthMessage, Response::HTTP_CREATED);
+        if ($id) {
+            // Update
+            $healthMessage = HealthMessage::find($id);
+            if ($healthMessage) {
+                $healthMessage->update($request->all());
+                return response()->json($healthMessage, Response::HTTP_OK);
+            } else {
+                return response()->json(['error' => 'HealthMessage not found'], Response::HTTP_NOT_FOUND);
+            }
+        } else {
+            // Create
+            $healthMessage = HealthMessage::create($request->all());
+            return response()->json($healthMessage, Response::HTTP_CREATED);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Delete a health message.
+     *
+     * @param  int  $id  The ID of the health message to delete.
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(HealthMessage $healthMessage)
+    public function destroy($id)
     {
-        return response()->json($healthMessage, Response::HTTP_OK);
-    }
+        $healthMessage = HealthMessage::find($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, HealthMessage $healthMessage)
-    {
-        $request->validate([
-            'message' => 'required|string',
-        ]);
-
-        $healthMessage->update($request->all());
-
-        return response()->json($healthMessage, Response::HTTP_OK);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(HealthMessage $healthMessage)
-    {
-        $healthMessage->delete();
-
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        if ($healthMessage) {
+            $healthMessage->delete();
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } else {
+            return response()->json(['error' => 'HealthMessage not found'], Response::HTTP_NOT_FOUND);
+        }
     }
 }
