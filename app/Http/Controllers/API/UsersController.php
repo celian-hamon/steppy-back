@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Badge;
+use App\Models\DailyStep;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,7 +12,9 @@ use Illuminate\Http\Response;
 class UsersController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieve all users.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function index()
     {
@@ -18,57 +22,216 @@ class UsersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create or update a user.
+     *
+     * @param \Illuminate\Http\Request $request The request object.
+     * @param int|null $userId The ID of the user to update (optional).
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the result of the operation.
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request, $userId = null)
     {
         $request->validate([
-            // Spécifiez les règles de validation pour les champs à ajouter ici
+            "avatarId" => 'required',
+            "code" => 'required',
+            'password' => $userId ? 'nullable' : 'required',
         ]);
 
-        $request['password'] = bcrypt($request['password']);
-        $user = User::create($request->all());
+        $user = $userId ? User::find($userId) : new User;
 
-        // Retournez la réponse avec le statut HTTP 201 (Created) et les données de l'utilisateur créé
-        return response()->json($user, Response::HTTP_CREATED);
+        if (!$user && $userId) {
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $user->avatarId = $request->input('avatarId');
+        $user->code = $request->input('code');
+        if ($request->input('password')) {
+            $user->password = bcrypt($request->input('password'));
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'User saved successfully', 'user' => $user], Response::HTTP_OK);
     }
 
     /**
-     * Display the specified resource.
+     * Add a badge to the user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(User $user)
+    public function addBadge(Request $request)
     {
+        var_dump("addBadge");
+        $request->validate([
+            'badgeId' => 'required',
+        ]);
+
+        $badgeId = $request->input('badgeId');
+        $badge = Badge::find($badgeId);
+        if (!$badge) {
+            return response()->json(['error' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $userId = $request->user()->id;
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if ($user->badges()->where('badgeId', $badgeId)->exists()) {
+            return response()->json(['error' => 'Badge already assigned to this user'], Response::HTTP_CONFLICT);
+        }
+
+        $user->badges()->attach($badgeId);
+
+        return response()->json(['message' => 'Badge added to user successfully'], Response::HTTP_OK);
+    }
+
+    /**
+     * Display all badges for the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showUserBadges(Request $request)
+    {
+        $user = $request->user();
+        $badges = $user->badges;
+
+        if ($badges->isEmpty()) {
+            return response()->json(['message' => 'No badges found for this user'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json($badges, Response::HTTP_OK);
+    }
+
+    /**
+     * Display the specified user.
+     *
+     * @param  int  $userId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($userId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
         return response()->json($user, Response::HTTP_OK);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete a user.
+     *
+     * @param int $userId The ID of the user to delete.
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, User $user)
+    public function destroy($userId)
     {
-        $request->validate([
-            // Spécifiez les règles de validation pour les champs à mettre à jour ici
-        ]);
-
-        // Mettez à jour les informations de l'utilisateur avec les données de la requête
-        $user->update($request->all());
-
-        // Retournez la réponse avec le statut HTTP 200 (OK) et les données de l'utilisateur mis à jour
-        return response()->json($user, Response::HTTP_OK);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        // Supprimez l'utilisateur de la base de données
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
         $user->delete();
-
-        // Retournez une réponse vide avec le statut HTTP 204 (No Content) pour indiquer que l'utilisateur a été supprimé
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
+    /**
+     * Remove a badge from a user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $userId
+     * @param  int  $badgeId
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function removeBadge(Request $request, $userId, $badgeId)
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $badge = Badge::find($badgeId);
+        if (!$badge) {
+            return response()->json(['error' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        if (!$user->badges()->where('badgeId', $badgeId)->exists()) {
+            return response()->json(['error' => 'Badge not assigned to this user'], Response::HTTP_CONFLICT);
+        }
+
+        $user->badges()->detach($badgeId);
+
+        return response()->json(['message' => 'Badge removed from user successfully'], Response::HTTP_OK);
+    }
+
+    /**
+     * Display all daily steps for the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAllUserSteps(Request $request)
+    {
+        $dailySteps = DailyStep::where('userId', $request->user()->id)
+            ->orderBy('day', 'desc')
+            ->get();
+
+        if ($dailySteps->isEmpty()) {
+            return response()->json(['message' => 'No daily steps found for this user'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json($dailySteps, Response::HTTP_OK);
+    }
+
+    /**
+     * Retrieve the last recorded daily steps for the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function lastUserSteps(Request $request)
+    {
+        $dailyStep = DailyStep::where('userId', $request->user()->id)
+            ->orderBy('day', 'desc')
+            ->first();
+
+        if ($dailyStep) {
+            return response()->json($dailyStep, Response::HTTP_OK);
+        } else {
+            return response()->json(['message' => 'No daily steps found for this user'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Display the daily step count for a specific date.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showUserStepsAtDate(Request $request)
+    {
+        $request->validate([
+            'day' => 'required|date',
+        ]);
+
+        $dailyStep = DailyStep::where('day', $request->day)
+            ->where('userId', $request->user()->id)
+            ->first();
+
+        if (!$dailyStep) {
+            return response()->json(['message' => 'DailyStep not found for this date'], Response::HTTP_NOT_FOUND);
+        }
+
+        return response()->json($dailyStep, Response::HTTP_OK);
+    }
+
+    /**
+     * Import users from a CSV file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function import(Request $request)
     {
         $file = $request->file('csv');
@@ -107,6 +270,12 @@ class UsersController extends Controller
         return response()->json(['message' => 'File imported successfully']);
     }
 
+    /**
+     * Export the steps data of users who have participated in a challenge as a CSV file.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function export(Request $request)
     {
         $challengeId = $request->challengeId;

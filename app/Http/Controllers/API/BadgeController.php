@@ -18,50 +18,66 @@ class BadgeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create or update a badge.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int|null  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'image' => 'required|string',
             'name' => 'required|string',
             'description' => 'required|string',
+            'isStreak' => 'required|boolean',
+            'quantity' => 'required|integer',
         ]);
 
-        $badge = Badge::create($request->all());
-
-        return response()->json($badge, Response::HTTP_CREATED);
+        if ($id) {
+            // Update
+            $badge = Badge::find($id);
+            if ($badge) {
+                $badge->update($request->all());
+                return response()->json($badge, Response::HTTP_OK);
+            } else {
+                return response()->json(['error' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+            }
+        } else {
+            // Create
+            $badge = Badge::create($request->all());
+            return response()->json($badge, Response::HTTP_CREATED);
+        }
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified badge.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show(Badge $badge)
+    public function show($id)
     {
+        $badge = Badge::find($id);
+        if (!$badge) {
+            return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
         return response()->json($badge, Response::HTTP_OK);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Delete a badge.
+     *
+     * @param  int  $id  The ID of the badge to delete.
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Badge $badge)
+    public function destroy($id)
     {
-        $request->validate([
-            'image' => 'required|string',
-            'name' => 'required|string',
-            'description' => 'required|string',
-        ]);
+        $badge = Badge::find($id);
+        if (!$badge) {
+            return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
 
-        $badge->update($request->all());
-
-        return response()->json($badge, Response::HTTP_OK);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Badge $badge)
-    {
         $badge->delete();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);

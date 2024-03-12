@@ -20,12 +20,13 @@ class AvatarController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create or update an avatar.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  int|null  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'image' => 'required|string',
@@ -33,9 +34,20 @@ class AvatarController extends Controller
             'badgeId' => 'required|integer|exists:badges,id'
         ]);
 
-        $avatar = Avatar::create($request->all());
-
-        return response()->json($avatar, Response::HTTP_CREATED);
+        if ($id) {
+            // Update
+            $avatar = Avatar::find($id);
+            if ($avatar) {
+                $avatar->update($request->all());
+                return response()->json($avatar, Response::HTTP_OK);
+            } else {
+                return response()->json(['error' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
+            }
+        } else {
+            // Create
+            $avatar = Avatar::create($request->all());
+            return response()->json($avatar, Response::HTTP_CREATED);
+        }
     }
 
     /**
@@ -50,31 +62,6 @@ class AvatarController extends Controller
         if (!$avatar) {
             return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
         }
-        return response()->json($avatar, Response::HTTP_OK);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $avatar = Avatar::find($id);
-        if (!$avatar) {
-            return response()->json(['message' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
-        }
-
-        $request->validate([
-            'image' => 'string',
-            'name' => 'string',
-            'badgeId' => 'integer|exists:badges,id'
-        ]);
-
-        $avatar->update($request->all());
-
         return response()->json($avatar, Response::HTTP_OK);
     }
 

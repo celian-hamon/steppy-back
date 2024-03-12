@@ -28,27 +28,66 @@ Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('badges', BadgeController::class);
-    Route::resource('avatars', AvatarController::class);
-    Route::resource('challenges', ChallengeController::class);
-    Route::resource('daily-challenges-steps', DailyChallengeStepsController::class);
+    // AUTH
+    Route::get('/me', [AuthController::class, 'me']);
+
+    // AVATARS
+    Route::get('avatars', [AvatarController::class, 'index']);
+    Route::get('avatars/{avatarId}', [AvatarController::class, 'show']);
+    Route::post('avatars/{avatarId?}', [AvatarController::class, 'createOrUpdate']);
+    Route::delete('avatars/{avatarId}', [AvatarController::class, 'destroy']);
+
+    // BADGES
+    Route::get('badges', [BadgeController::class, 'index']);
+    Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
+    Route::post('badges/{badgeId?}', [BadgeController::class, 'createOrUpdate']);
+    Route::delete('badges/{badgeId}', [BadgeController::class, 'destroy']);
+
+    // CHALLENGES
+    // Route::apiResource('challenges', ChallengeController::class);
+    Route::get('challenges', [ChallengeController::class, 'index']);
+    Route::get('challenges/{challengeId}', [ChallengeController::class, 'show']);
+    Route::post('challenges/{challengeId?}', [ChallengeController::class, 'createOrUpdate']);
+    Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
+
+
+    // DAILY CHALLENGE STEPS
+    Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
 
     // DAILY STEPS
-    route::get('daily-steps/user/all', [DailyStepsController::class, 'showAll']);
-    route::get('daily-steps/user/last', [DailyStepsController::class, 'lastUserSteps']);
-    route::get('daily-steps/user/atdate', [DailyStepsController::class, 'showAtDate']);
-    route::post('daily-steps', [DailyStepsController::class, 'storeOrUpdate']);
+    Route::post('daily-steps', [DailyStepsController::class, 'createOrUpdate']);
+
+    // HEALTH MESSAGES
+    Route::get('health-messages', [HealthMessagesController::class, 'index']);
+    Route::get('health-messages/{healthMessageId}', [HealthMessagesController::class, 'show']);
+
+    // USERS
+    Route::get('users', [UsersController::class, 'index']);
+    Route::get('users/{userId}', [UsersController::class, 'show']);
+    Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
+    Route::delete('users/{userId}', [UsersController::class, 'destroy']);
+
+    Route::post('users/badges', [UsersController::class, 'addBadge']);
+    Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
+    Route::get('users/badges', [UsersController::class, 'showUserBadges']);
+
+    Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
+    Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
+    Route::get('users/daily-steps/atdate', [UsersController::class, 'showUserStepsAtDate']);
+
 
     // Admin specific routes
     Route::middleware('admin')->group(function () {
+        // DAILY STEPS
         Route::get('daily-steps', [DailyStepsController::class, 'index']);
-        Route::delete('daily-steps/{id}', [DailyStepsController::class, 'destroy']);
+        Route::delete('daily-steps/{dailyStepId}', [DailyStepsController::class, 'destroy']);
+
+        // HEALTH MESSAGES
+        Route::post('health-messages/{healthMessageId?}', [HealthMessagesController::class, 'createOrUpdate']);
+        Route::delete('health-messages/{healthMessageId}', [HealthMessagesController::class, 'destroy']);
+
+        // USERS IMPORT/EXPORT
         Route::post('/import', [UsersController::class, 'import']);
         Route::post('/export', [UsersController::class, 'export']);
     });
-
-    Route::resource('health-messages', HealthMessagesController::class);
-    Route::resource('users', UsersController::class);
-
-    Route::get('/me', [AuthController::class, 'me']);
 });
