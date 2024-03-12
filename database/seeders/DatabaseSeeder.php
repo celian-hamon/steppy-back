@@ -7,8 +7,6 @@ use App\Models\Avatar;
 use App\Models\Badge;
 use App\Models\Challenge;
 use App\Models\DailyChallengeStep;
-use App\Models\DailyStep;
-use App\Models\Job;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
