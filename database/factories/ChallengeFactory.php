@@ -25,7 +25,7 @@ class ChallengeFactory extends Factory
             'startAt' => (new \DateTime())->sub($interval),
             'endAt' => (new \DateTime())->add($interval),
             'password' => $this->faker->name,
-            'allSteps' => DailyStep::all()->value('stepCount'),
+            'allSteps' => 0,
             'description' => $this->faker->sentence,
         ];
     }

@@ -39,6 +39,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // BADGES
     Route::get('badges', [BadgeController::class, 'index']);
+    Route::get('badges/individuals', [BadgeController::class, 'showAllIndividualBadges']);
+    Route::get('badges/globals', [BadgeController::class, 'showAllGlobalBadges']);
+    Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
     Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
     Route::post('badges/{badgeId?}', [BadgeController::class, 'createOrUpdate']);
     Route::delete('badges/{badgeId}', [BadgeController::class, 'destroy']);
