@@ -34,7 +34,6 @@ class DailyChallengeStepsController extends Controller
      */
     public function createOrUpdate(Request $request, $id = null)
     {
-        var_dump("je suis dans la");
         $request->validate([
             'stepCount' => 'required|integer',
             'day' => 'required|date',

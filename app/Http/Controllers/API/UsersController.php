@@ -61,7 +61,6 @@ class UsersController extends Controller
      */
     public function addBadge(Request $request)
     {
-        var_dump("addBadge");
         $request->validate([
             'badgeId' => 'required',
         ]);
