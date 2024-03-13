@@ -16,7 +16,7 @@ class DailyStepsController extends Controller
      */
     public function index()
     {
-        return DailyStep::all();
+        return DailyStep::orderBy('day', 'desc')->get();
     }
 
     /**
