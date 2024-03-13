@@ -35,6 +35,7 @@ class Badge extends Model
 		'image',
 		'name',
 		'description',
+		'isGlobal',
 		'isStreak',
 		'quantity'
 	];
