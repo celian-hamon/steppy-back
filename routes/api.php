@@ -40,6 +40,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // BADGES
     Route::get('badges', [BadgeController::class, 'index']);
+    Route::get('badges/{badgeId}/withavatar', [BadgeController::class, 'showBadgeWithAvatar']);
+    Route::get('badges/withavatar', [BadgeController::class, 'showAllBadgesWithAvatar']);
     Route::get('badges/individuals', [BadgeController::class, 'showAllIndividualBadges']);
     Route::get('badges/globals', [BadgeController::class, 'showAllGlobalBadges']);
     Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
@@ -49,12 +51,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // CHALLENGES
     // Route::apiResource('challenges', ChallengeController::class);
+    Route::get('challenges', [ChallengeController::class, 'index']);
     Route::get('challenges/{challengeId}', [ChallengeController::class, 'show']);
+    Route::post('challenges/{challengeId?}', [ChallengeController::class, 'createOrUpdate']);
     Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
 
 
     // DAILY CHALLENGE STEPS
-    Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
+    // Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
+    Route::get('daily-challenges-steps', [DailyChallengeStepsController::class, 'index']);
+    Route::get('daily-challenges-steps/{dailyChallengeId}', [DailyChallengeStepsController::class, 'show']);
+    // Route::post('daily-challenges-steps/{dailyChallengeId?}', [DailyChallengeStepsController::class, 'createOrUpdate']);
+    Route::delete('daily-challenges-steps/{dailyChallengeId}', [DailyChallengeStepsController::class, 'destroy']);
 
     // DAILY STEPS
     Route::post('daily-steps', [DailyStepsController::class, 'createOrUpdate']);
@@ -77,9 +85,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/{userId}', [UsersController::class, 'show']);
     Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
     Route::delete('users/{userId}', [UsersController::class, 'destroy']);
-
-
-
 
     // Admin specific routes
     Route::middleware('admin')->group(function () {

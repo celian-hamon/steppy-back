@@ -20,7 +20,7 @@ class CreateDailyStepsTable extends Migration
             $table->bigInteger('stepCount');
             $table->timestamp('day');
             $table->uuid('userId');
-            $table->foreign('userId')->references('id')->on('users');
+            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');  
             $table->timestamps();
         });
 

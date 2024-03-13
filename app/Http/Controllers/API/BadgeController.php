@@ -16,6 +16,44 @@ class BadgeController extends Controller
     {
         return Badge::all();
     }
+    
+    /**
+     * Display the specified badge.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show($id)
+    {
+        $badge = Badge::find($id);
+        if (!$badge) {
+            return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json($badge, Response::HTTP_OK);
+    }
+
+    public function showAllBadgesWithAvatar()
+    {
+        $badges = Badge::with('avatars')->get();
+        return response()->json($badges, Response::HTTP_OK);
+    }
+    
+    /**
+     * Display the badge with its associated avatars.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showBadgeWithAvatar($id)
+    {
+        $badge = Badge::with('avatars')->find($id);
+    
+        if (!$badge) {
+            return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
+        }
+    
+        return response()->json($badge, Response::HTTP_OK);
+    }
 
     /**
      * Create or update a badge.
@@ -33,6 +71,7 @@ class BadgeController extends Controller
             'isGlobal' => 'required|boolean',
             'isStreak' => 'required|boolean',
             'quantity' => 'required|integer',
+            'avatarId' => 'required|integer'
         ]);
 
         if ($id) {
@@ -52,21 +91,6 @@ class BadgeController extends Controller
     }
 
     /**
-     * Display the specified badge.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $badge = Badge::find($id);
-        if (!$badge) {
-            return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
-        }
-        return response()->json($badge, Response::HTTP_OK);
-    }
-
-    /**
      * Retrieve all individual success badges.
      *
      * @return \Illuminate\Http\JsonResponse
@@ -79,7 +103,6 @@ class BadgeController extends Controller
         }
         return response()->json($badges, Response::HTTP_OK);
     }
-
 
     /**
      * Retrieve all global success badges.

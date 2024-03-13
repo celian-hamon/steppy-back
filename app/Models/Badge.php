@@ -31,18 +31,27 @@ class Badge extends Model
     protected $table = 'badges';
 	public $timestamps = true;
 
+	protected $casts = [
+		'avatarId' => 'int'
+	];
+
+	protected $hidden = [
+		'pivot'
+	];
+
 	protected $fillable = [
 		'image',
 		'name',
 		'description',
 		'isGlobal',
 		'isStreak',
-		'quantity'
+		'quantity',
+		'avatarId'
 	];
 
 	public function avatars()
 	{
-		return $this->hasMany(Avatar::class, 'badgeId');
+		return $this->hasOne(Avatar::class, 'id', 'avatarId');
 	}
 
 	public function challenges()

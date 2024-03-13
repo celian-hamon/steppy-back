@@ -25,6 +25,8 @@ class CreateBadgesTable extends Migration
             $table->integer('quantity');
             $table->boolean('isGlobal')->default(false);
             $table->timestamps();
+            $table->bigInteger('avatarId');
+            $table->foreign('avatarId')->references('id')->on('avatar')->cascadeOnDelete();    
         });
 
         Schema::enableForeignKeyConstraints();
