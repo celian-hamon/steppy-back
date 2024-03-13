@@ -51,7 +51,7 @@ class SyncData extends Command
         $globalStep->stepCount = DailyStep::where($todayClause)->value('stepCount');
         $globalStep->save();
         $challenge->allSteps = DailyChallengeStep::where('challengeId', '=', $challenge->id)
-            ->value('stepCount');
+            ->sum('stepCount');
         $challenge->save();
     }
 }
