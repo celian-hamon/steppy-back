@@ -36,7 +36,6 @@ class Challenge extends Model
 	protected $casts = [
 		'startAt' => 'datetime',
 		'endAt' => 'datetime',
-		'allSteps' => 'int'
 	];
 
 	protected $hidden = [

@@ -21,9 +21,11 @@ class ChallengeController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param int|null $challengeId
-     * @return JsonResponse
+     * Create or update a challenge.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request object.
+     * @param int|null $challengeId The ID of the challenge to update (optional).
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the result of the operation.
      */
     public function createOrUpdate(Request $request, $challengeId = null)
     {
@@ -52,9 +54,12 @@ class ChallengeController extends Controller
         return response()->json(['message' => 'Challenge saved successfully', 'challenge' => $challenge], Response::HTTP_OK);
     }
 
+
     /**
-     * @param int $challengeId
-     * @return JsonResponse
+     * Display the specified challenge.
+     *
+     * @param  int  $challengeId
+     * @return \Illuminate\Http\Response
      */
     public function show($challengeId)
     {
@@ -66,8 +71,10 @@ class ChallengeController extends Controller
     }
 
     /**
-     * @param int $challengeId
-     * @return JsonResponse
+     * Destroy a challenge.
+     *
+     * @param int $challengeId The ID of the challenge to be destroyed.
+     * @return \Illuminate\Http\Response
      */
     public function destroy($challengeId)
     {

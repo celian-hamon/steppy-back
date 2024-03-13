@@ -30,6 +30,7 @@ class BadgeController extends Controller
             'image' => 'required|string',
             'name' => 'required|string',
             'description' => 'required|string',
+            'isGlobal' => 'required|boolean',
             'isStreak' => 'required|boolean',
             'quantity' => 'required|integer',
         ]);
@@ -63,6 +64,35 @@ class BadgeController extends Controller
             return response()->json(['message' => 'Badge not found'], Response::HTTP_NOT_FOUND);
         }
         return response()->json($badge, Response::HTTP_OK);
+    }
+
+    /**
+     * Retrieve all individual success badges.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAllIndividualBadges()
+    {
+        $badges = Badge::where('isGlobal', false)->get();
+        if ($badges->isEmpty()) {
+            return response()->json(['message' => 'No individual success found'], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json($badges, Response::HTTP_OK);
+    }
+
+
+    /**
+     * Retrieve all global success badges.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAllGlobalBadges()
+    {
+        $badges = Badge::where('isGlobal', true)->get();
+        if ($badges->isEmpty()) {
+            return response()->json(['message' => 'No global success found'], Response::HTTP_NOT_FOUND);
+        }
+        return response()->json($badges, Response::HTTP_OK);
     }
 
     /**
