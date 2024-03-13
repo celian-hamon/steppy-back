@@ -19,7 +19,7 @@ class StatController extends Controller
     public function index()
     {
         $currentChallenge = Challenge::where('endAt','>',(new DateTime())->setTime(0,0))->first();
-        $steps = DailyChallengeStep::where('challengeId','=',$currentChallenge->id)->get();
+        $steps = DailyChallengeStep::where('challengeId','=',$currentChallenge->id)->orderBy('day')->get();
         $monthSteps = DailyChallengeStep::where([
             ['day','>=',(new DateTime())->sub(DateInterval::createFromDateString('30 days'))],
             ['challengeId','=',$currentChallenge->id]

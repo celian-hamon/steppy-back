@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AvatarController;
+use App\Http\Controllers\API\StatController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\API\BadgeController;
 use App\Http\Controllers\API\ChallengeController;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 // So to get a 401 response even if you forget the header i made this route whos only purpose is to return a 401 response
 Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/stats', [StatController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // AUTH
@@ -48,9 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // CHALLENGES
     // Route::apiResource('challenges', ChallengeController::class);
-    Route::get('challenges', [ChallengeController::class, 'index']);
     Route::get('challenges/{challengeId}', [ChallengeController::class, 'show']);
-    Route::post('challenges/{challengeId?}', [ChallengeController::class, 'createOrUpdate']);
     Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
 
 
@@ -68,11 +68,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('users/badges', [UsersController::class, 'showUserBadges']);
     Route::post('users/badges', [UsersController::class, 'addBadge']);
     Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
-    
+
     Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
     Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
     Route::get('users/daily-steps/atdate', [UsersController::class, 'showUserStepsAtDate']);
-    
+
     Route::get('users', [UsersController::class, 'index']);
     Route::get('users/{userId}', [UsersController::class, 'show']);
     Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
