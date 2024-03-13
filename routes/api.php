@@ -62,18 +62,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('health-messages/{healthMessageId}', [HealthMessagesController::class, 'show']);
 
     // USERS
+    Route::get('users/badges', [UsersController::class, 'showUserBadges']);
+    Route::post('users/badges', [UsersController::class, 'addBadge']);
+    Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
+    
+    Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
+    Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
+    Route::get('users/daily-steps/atdate', [UsersController::class, 'showUserStepsAtDate']);
+    
     Route::get('users', [UsersController::class, 'index']);
     Route::get('users/{userId}', [UsersController::class, 'show']);
     Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
     Route::delete('users/{userId}', [UsersController::class, 'destroy']);
 
-    Route::get('users/badges', [UsersController::class, 'showUserBadges']);
-    Route::post('users/badges', [UsersController::class, 'addBadge']);
-    Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
 
-    Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
-    Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
-    Route::get('users/daily-steps/atdate', [UsersController::class, 'showUserStepsAtDate']);
 
 
     // Admin specific routes
