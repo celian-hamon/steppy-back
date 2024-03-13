@@ -61,6 +61,10 @@ class Challenge extends Model
 	}
 
     public function dailySteps() {
-        return $this->hasMany(DailyStep::class, 'challenge_id', 'challengeId');
+        return $this->hasMany(DailyStep::class, 'id', 'challengeId');
+    }
+
+    public function dailyChallengeSteps() {
+        return $this->hasMany(DailyChallengeStep::class, 'id', 'challengeId');
     }
 }
