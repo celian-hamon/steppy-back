@@ -239,10 +239,10 @@ class UsersController extends Controller
         if (!$file) {
             return response()->json(['message' => 'No file uploaded']);
         }
-        $fileType = $file->getClientMimeType();
-        if ($fileType !== 'text/csv') {
-            return response()->json(['message' => 'Invalid file type']);
-        }
+        // $fileType = $file->getClientMimeType();
+        // if ($fileType !== 'text/csv' || $fileType != 'application/vnd.ms-excel' || $fileType !== 'application/csv' || $fileType !== 'application/x-csv' || $fileType !== 'text/x-csv' || $fileType !== 'text/plain') {
+        //     return response()->json(['message' => 'Invalid file type', 'fileType' => $fileType, 'requiredType' => 'text/csv']);
+        // }
         switch ($file->getClientOriginalExtension()) {
             case 'csv':
                 break;
