@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Console\Commands\SyncData;
 use App\Http\Controllers\Controller;
 use App\Models\Challenge;
 use App\Models\DailyChallengeStep;
@@ -36,5 +37,9 @@ class StatController extends Controller
             'totalWeekSteps' => $weekSteps->sum('stepCount'),
             'weekSteps' => $weekSteps->orderBy('day')->get(),
         ];
+    }
+
+    public function recalculate() {
+        (new  SyncData())->handle();
     }
 }

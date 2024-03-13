@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [AuthController::class, 'unauthorized'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/stats', [StatController::class, 'index']);
+Route::post('/recalculate', [StatController::class, 'recalculate']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // AUTH
@@ -98,6 +99,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // USERS IMPORT/EXPORT
         Route::post('/import', [UsersController::class, 'import']);
-        Route::post('/export', [UsersController::class, 'export']);
+        Route::post('/export/{challengeId}', [UsersController::class, 'export']);
     });
 });
