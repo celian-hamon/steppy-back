@@ -48,8 +48,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('badges/{badgeId}', [BadgeController::class, 'destroy']);
 
     // CHALLENGES
-    // Route::apiResource('challenges', ChallengeController::class);
+    //Route::apiResource('challenges', ChallengeController::class);
     Route::get('challenges/{challengeId}', [ChallengeController::class, 'show']);
+    Route::get('challenges',[ChallengeController::class,'index']);
+    Route::post('challenges', [ChallengeController::class,'createOrUpdate']);
     Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
 
 
