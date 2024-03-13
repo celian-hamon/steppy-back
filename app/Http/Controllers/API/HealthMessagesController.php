@@ -20,6 +20,22 @@ class HealthMessagesController extends Controller
     }
 
     /**
+     * Display a random health message.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showRandom()
+    {
+        $healthMessage = HealthMessage::inRandomOrder()->first();
+
+        if ($healthMessage) {
+            return response()->json($healthMessage, Response::HTTP_OK);
+        } else {
+            return response()->json(['error' => 'No health messages found'], Response::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
      * Display the specified health message.
      *
      * @param  int  $id
