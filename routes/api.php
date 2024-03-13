@@ -9,7 +9,6 @@ use App\Http\Controllers\API\DailyChallengeStepsController;
 use App\Http\Controllers\API\DailyStepsController;
 use App\Http\Controllers\API\HealthMessagesController;
 use App\Http\Controllers\API\UsersController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // HEALTH MESSAGES
     Route::get('health-messages', [HealthMessagesController::class, 'index']);
+    Route::get('health-messages/random', [HealthMessagesController::class, 'showRandom']);
     Route::get('health-messages/{healthMessageId}', [HealthMessagesController::class, 'show']);
 
     // USERS
