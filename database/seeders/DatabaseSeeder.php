@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         DailyChallengeStep::factory(10)->create();
 
         // Badge::factory(5)->create();
-        Avatar::factory(10)->create();
+        Avatar::factory(9)->create();
         User::factory(10)->create();
 
         $user = User::factory()->create([
