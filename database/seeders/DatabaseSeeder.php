@@ -7,6 +7,7 @@ use App\Models\Avatar;
 use App\Models\Badge;
 use App\Models\Challenge;
 use App\Models\DailyChallengeStep;
+use App\Models\HealthMessage;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->createBadges();
+        $this->createHealthMessages();
 
         // Create fake steps for past 10 days for all users including (and make them part of the challenge)
         $users = User::all();
@@ -68,6 +70,21 @@ class DatabaseSeeder extends Seeder
     
         foreach ($badgesData as $badgeData) {
             Badge::create($badgeData);
+        }
+    }
+
+    private function createHealthMessages()
+    {
+        $HealthMessagesData = [
+            ['message' => 'Marcher régulièrement réduit le risque de maladies cardiaques en renforçant le cœur et en améliorant la circulation sanguine.'],
+            ['message' => 'La marche aide à contrôler la pression artérielle, réduisant ainsi le risque d\'hypertension et de complications associées.'],
+            ['message' => 'Une marche quotidienne peut contribuer à la gestion du poids en brûlant des calories et en stimulant le métabolisme.'],
+            ['message' => 'La pratique régulière de la marche améliore la santé mentale en réduisant le stress, l\'anxiété et en favorisant la production d\'endorphines, les hormones du bonheur.'],
+            ['message' => 'La marche favorise la santé des articulations en renforçant les muscles et en améliorant la flexibilité, réduisant ainsi le risque de douleurs articulaires et d\'arthrite.'],
+        ];
+    
+        foreach ($HealthMessagesData as $HealthMessageData) {
+            HealthMessage::create($HealthMessageData);
         }
     }
     
