@@ -17,9 +17,15 @@ class ChallengeController extends Controller
      */
     public function index()
     {
-        return Challenge::orderBy('endAt', 'desc')->get();
+        $challenges = Challenge::orderBy('endAt', 'desc')->get();
+    
+        if ($challenges->isEmpty()) {
+            return response()->json(['message' => 'No challenges found'], Response::HTTP_NOT_FOUND);
+        }
+    
+        return $challenges;
     }
-
+    
     /**
      * Create or update a challenge.
      *

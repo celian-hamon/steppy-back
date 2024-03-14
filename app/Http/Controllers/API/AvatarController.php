@@ -30,22 +30,21 @@ class AvatarController extends Controller
     {
         $request->validate([
             'image' => 'required|string',
-            'name' => 'required|string',
-            'badgeId' => 'required|integer|exists:badges,id'
+            'name' => 'required|string'
         ]);
-
+    
         if ($id) {
             // Update
             $avatar = Avatar::find($id);
             if ($avatar) {
-                $avatar->update($request->all());
+                $avatar->update($request->only(['image', 'name']));
                 return response()->json($avatar, Response::HTTP_OK);
             } else {
                 return response()->json(['error' => 'Avatar not found'], Response::HTTP_NOT_FOUND);
             }
         } else {
             // Create
-            $avatar = Avatar::create($request->all());
+            $avatar = Avatar::create($request->only(['image', 'name']));
             return response()->json($avatar, Response::HTTP_CREATED);
         }
     }

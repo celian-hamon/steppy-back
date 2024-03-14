@@ -10,17 +10,29 @@ use Illuminate\Http\Response;
 class DailyChallengeStepsController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Retrieve all daily challenge steps.
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Database\Eloquent\Collection
      */
     public function index()
     {
-        return DailyChallengeStep::all();
+        $dailyChallengeSteps = DailyChallengeStep::all();
+
+        if ($dailyChallengeSteps->isEmpty()) {
+            return response()->json(['message' => 'No daily challenge steps found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $dailyChallengeSteps;
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create or update a daily challenge step.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int|null  $id
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function createOrUpdate(Request $request, $id = null)
     {
         $request->validate([
             'stepCount' => 'required|integer',
@@ -28,13 +40,27 @@ class DailyChallengeStepsController extends Controller
             'challengeId' => 'required|exists:challenges,id',
         ]);
 
-        $dailyChallengeStep = DailyChallengeStep::create($request->all());
-
-        return response()->json($dailyChallengeStep, Response::HTTP_CREATED);
+        if ($id) {
+            // Update
+            $dailyChallengeStep = DailyChallengeStep::find($id);
+            if ($dailyChallengeStep) {
+                $dailyChallengeStep->update($request->all());
+                return response()->json($dailyChallengeStep, Response::HTTP_OK);
+            } else {
+                return response()->json(['message' => 'Daily challenge step not found'], Response::HTTP_NOT_FOUND);
+            }
+        } else {
+            // Create
+            $dailyChallengeStep = DailyChallengeStep::create($request->all());
+            return response()->json($dailyChallengeStep, Response::HTTP_CREATED);
+        }
     }
 
     /**
      * Display the specified resource.
+     *
+     * @param  \App\Models\DailyChallengeStep  $dailyChallengeStep
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show(DailyChallengeStep $dailyChallengeStep)
     {
@@ -43,6 +69,10 @@ class DailyChallengeStepsController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\DailyChallengeStep  $dailyChallengeStep
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, DailyChallengeStep $dailyChallengeStep)
     {
@@ -58,7 +88,10 @@ class DailyChallengeStepsController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a DailyChallengeStep.
+     *
+     * @param  DailyChallengeStep  $dailyChallengeStep
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(DailyChallengeStep $dailyChallengeStep)
     {

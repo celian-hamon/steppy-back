@@ -22,7 +22,6 @@ class AvatarFactory extends Factory
         return [
             'image' => "placeholder.png",
             'name' => $this->faker->name(),
-            'badgeId' => Badge::all()->random()->first()->id
         ];
     }
 }

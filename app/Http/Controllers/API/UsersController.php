@@ -61,7 +61,6 @@ class UsersController extends Controller
      */
     public function addBadge(Request $request)
     {
-        var_dump("addBadge");
         $request->validate([
             'badgeId' => 'required',
         ]);
@@ -87,8 +86,9 @@ class UsersController extends Controller
         return response()->json(['message' => 'Badge added to user successfully'], Response::HTTP_OK);
     }
 
+
     /**
-     * Display all badges for the authenticated user.
+     * Display the badges of a user.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
@@ -96,13 +96,18 @@ class UsersController extends Controller
     public function showUserBadges(Request $request)
     {
         $user = $request->user();
-        $badges = $user->badges;
+        $badges = $user->badges()->with('avatars')->get();
 
         if ($badges->isEmpty()) {
             return response()->json(['message' => 'No badges found for this user'], Response::HTTP_NOT_FOUND);
         }
 
-        return response()->json($badges, Response::HTTP_OK);
+        $response = [
+            'userId' => $user->id,
+            'badges' => $badges
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**

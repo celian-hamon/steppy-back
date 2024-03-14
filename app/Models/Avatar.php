@@ -42,7 +42,7 @@ class Avatar extends Model
 
 	public function badge()
 	{
-		return $this->belongsTo(Badge::class, 'badgeId');
+		return $this->belongsTo(Badge::class, 'id', 'badgeId', );
 	}
 
 	public function users()

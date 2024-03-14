@@ -19,8 +19,6 @@ class CreateAvatarTable extends Migration
             $table->id();
             $table->string('image');
             $table->string('name');
-            $table->bigInteger('badgeId');
-            $table->foreign('badgeId')->references('id')->on('badges');
             $table->timestamps();
         });
 
