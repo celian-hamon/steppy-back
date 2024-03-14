@@ -36,8 +36,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // AVATARS
     Route::get('avatars', [AvatarController::class, 'index']);
     Route::get('avatars/{avatarId}', [AvatarController::class, 'show']);
-    Route::post('avatars/{avatarId?}', [AvatarController::class, 'createOrUpdate']);
-    Route::delete('avatars/{avatarId}', [AvatarController::class, 'destroy']);
 
     // BADGES
     Route::get('badges', [BadgeController::class, 'index']);
@@ -47,19 +45,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('badges/globals', [BadgeController::class, 'showAllGlobalBadges']);
     Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
     Route::get('badges/{badgeId}', [BadgeController::class, 'show']);
-    Route::post('badges/{badgeId?}', [BadgeController::class, 'createOrUpdate']);
-    Route::delete('badges/{badgeId}', [BadgeController::class, 'destroy']);
 
     // CHALLENGES
-    // Route::apiResource('challenges', ChallengeController::class);
     Route::get('challenges', [ChallengeController::class, 'index']);
     Route::get('challenges/{challengeId}', [ChallengeController::class, 'show']);
-    Route::post('challenges/{challengeId?}', [ChallengeController::class, 'createOrUpdate']);
-    Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
-
 
     // DAILY CHALLENGE STEPS
-    // Route::apiResource('daily-challenges-steps', DailyChallengeStepsController::class);
     Route::get('daily-challenges-steps', [DailyChallengeStepsController::class, 'index']);
     Route::get('daily-challenges-steps/{dailyChallengeId}', [DailyChallengeStepsController::class, 'show']);
     // Route::post('daily-challenges-steps/{dailyChallengeId?}', [DailyChallengeStepsController::class, 'createOrUpdate']);
@@ -76,7 +67,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // USERS
     Route::get('users/badges', [UsersController::class, 'showUserBadges']);
     Route::post('users/badges', [UsersController::class, 'addBadge']);
-    Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
 
     Route::get('users/daily-steps/all', [UsersController::class, 'showAllUserSteps']);
     Route::get('users/daily-steps/last', [UsersController::class, 'lastUserSteps']);
@@ -84,11 +74,21 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('users', [UsersController::class, 'index']);
     Route::get('users/{userId}', [UsersController::class, 'show']);
-    Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
-    Route::delete('users/{userId}', [UsersController::class, 'destroy']);
 
     // Admin specific routes
     Route::middleware('admin')->group(function () {
+        // AVATARS
+        Route::post('avatars/{avatarId?}', [AvatarController::class, 'createOrUpdate']);
+        Route::delete('avatars/{avatarId}', [AvatarController::class, 'destroy']);
+
+        // BADGES
+        Route::post('badges/{badgeId?}', [BadgeController::class, 'createOrUpdate']);
+        Route::delete('badges/{badgeId}', [BadgeController::class, 'destroy']);
+        
+        // CHALLENGES
+        Route::post('challenges/{challengeId?}', [ChallengeController::class, 'createOrUpdate']);
+        Route::delete('challenges/{challengeId}', [ChallengeController::class, 'destroy']);
+
         // DAILY STEPS
         Route::get('daily-steps', [DailyStepsController::class, 'index']);
         Route::delete('daily-steps/{dailyStepId}', [DailyStepsController::class, 'destroy']);
@@ -97,6 +97,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('health-messages/{healthMessageId?}', [HealthMessagesController::class, 'createOrUpdate']);
         Route::delete('health-messages/{healthMessageId}', [HealthMessagesController::class, 'destroy']);
 
+        // USERS
+        Route::delete('users/badges/{userId}/{badgeId}', [UsersController::class, 'removeBadge']);
+        Route::post('users/{userId?}', [UsersController::class, 'createOrUpdate']);
+        Route::delete('users/{userId}', [UsersController::class, 'destroy']);
+    
         // USERS IMPORT/EXPORT
         Route::post('/import', [UsersController::class, 'import']);
         Route::post('/export/{challengeId}', [UsersController::class, 'export']);
