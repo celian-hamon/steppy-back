@@ -25,7 +25,7 @@ class ChallengeFactory extends Factory
             'startAt' => (new \DateTime())->sub($interval),
             'endAt' => (new \DateTime())->add($interval),
             'password' => $this->faker->name,
-            'allSteps' => 150000,
+            'allSteps' => 4000000,
             'description' => $this->faker->sentence,
         ];
     }
