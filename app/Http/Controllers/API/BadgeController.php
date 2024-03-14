@@ -97,7 +97,7 @@ class BadgeController extends Controller
      */
     public function showAllIndividualBadges()
     {
-        $badges = Badge::where('isGlobal', false)->get();
+        $badges = Badge::where('isGlobal', false)->orderBy('id', 'asc')->get();
         if ($badges->isEmpty()) {
             return response()->json(['message' => 'No individual success found'], Response::HTTP_NOT_FOUND);
         }

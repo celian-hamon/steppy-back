@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         Challenge::factory(1)->create();
         DailyChallengeStep::factory(10)->create();
 
-        Badge::factory(5)->create();
+        // Badge::factory(5)->create();
         Avatar::factory(10)->create();
         User::factory(10)->create();
 
@@ -36,6 +36,8 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
+        $this->createBadges();
+
         // Create fake steps for past 10 days for all users including (and make them part of the challenge)
         $users = User::all();
         $challenge = Challenge::all()->random()->value('id');
@@ -49,4 +51,24 @@ class DatabaseSeeder extends Seeder
             }
         }
     }
+
+    private function createBadges()
+    {
+        $badgesData = [
+            ['image' => 'image1.png', 'name' => 'Premiers pas', 'description' => 'Faire ses premiers pas', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 100, 'avatarId' => 1],
+            ['image' => 'image2.png', 'name' => 'Marcheur confirmé', 'description' => 'Faire 5000 pas, à moitié arrivé !', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 5000, 'avatarId' => 2],
+            ['image' => 'image3.png', 'name' => 'Pas de géant', 'description' => 'Atteint les 100 000 pas !', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 100000, 'avatarId' => 3],
+            ['image' => 'image4.png', 'name' => 'Pas constant', 'description' => 'Atteint une moyenne de 5000 pas cette semaine', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 5000, 'avatarId' => 4],
+            ['image' => 'image5.png', 'name' => 'Rythme élevé', 'description' => 'Atteint une moyenne de 7500 pas cette semaine', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 7500, 'avatarId' => 5],
+            ['image' => 'image6.png', 'name' => 'Marathonien', 'description' => 'Parcours 42 000 pas', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 42000, 'avatarId' => 6],
+            ['image' => 'image7.png', 'name' => 'Explorateur', 'description' => 'Atteint les 500 000 pas !', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 500000, 'avatarId' => 7],
+            ['image' => 'image8.png', 'name' => 'Marche triomphale', 'description' => 'Atteint les 15 000 pas en un jour !', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 15000, 'avatarId' => 8],
+            ['image' => 'image9.png', 'name' => 'Escapade aérienne', 'description' => 'Atteint une moyenne de 10 000 pas cette semaine !', 'isGlobal' => false, 'isStreak' => false, 'quantity' => 10000, 'avatarId' => 9],
+        ];
+    
+        foreach ($badgesData as $badgeData) {
+            Badge::create($badgeData);
+        }
+    }
+    
 }
