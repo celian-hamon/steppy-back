@@ -65,6 +65,10 @@ class HealthMessagesController extends Controller
             'message' => 'required|string',
         ]);
 
+        if(strlen($request->input('message')) > 170) {
+            return response()->json(['error' => 'Message too long'], Response::HTTP_BAD_REQUEST);
+        }
+
         if ($id) {
             // Update
             $healthMessage = HealthMessage::find($id);
