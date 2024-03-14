@@ -137,6 +137,8 @@ class UsersController extends Controller
         if (!$user) {
             return response()->json(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
+        $user->challenges()->detach();
+        $user->daily_steps()->delete();
         $user->delete();
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
@@ -279,12 +281,11 @@ class UsersController extends Controller
      * Export the steps data of users who have participated in a challenge as a CSV file.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param int $challengeId
      * @return \Illuminate\Http\Response
      */
-    public function export(Request $request)
+    public function export(Request $request, int $challengeId)
     {
-        $challengeId = $request->challengeId;
-
         // Convert Unix timestamps from request to DateTime objects
         $startDate = (new \DateTime())->setTimestamp($request->startDate);
         $endDate = (new \DateTime())->setTimestamp($request->endDate);
